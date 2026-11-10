@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SecureChat</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- ============ Login / Registration ============ -->
+  <main id="auth" class="auth" hidden>
+    <div class="auth-card">
+      <div class="brand brand-center">
+        <div class="logo"><img src="/logo.svg" alt="" width="44" height="44"></div>
+        <span>SecureChat</span>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" role="tab" aria-selected="true" data-mode="login">Log in</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-mode="register">Create account</button>
+      </div>
+
+      <form id="auth-form" novalidate>
+        <label class="field">
+          <span>Username</span>
+          <input id="username" name="username" type="text" autocomplete="username" maxlength="32" placeholder="e.g. ali" required>
+        </label>
+        <label class="field">
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+        </label>
+        <p id="auth-error" class="notice error" role="alert" hidden></p>
+        <button id="auth-submit" class="btn primary" type="submit">Log in</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- ============ Chat dashboard ============ -->
+  <main id="app" class="app" hidden>
+
+    <aside class="sidebar" aria-label="Chats">
+      <div class="brand">
+        <div class="logo"><img src="/logo.svg" alt="" width="44" height="44"></div>
+        <span>SecureChat</span>
+      </div>
+
+      <div class="me-card">
+        <div class="avatar" id="me-avatar">?</div>
+        <div class="me-info">
+          <div class="name" id="me-name"></div>
+          <div class="conn online" id="me-conn"><span class="dot"></span><span>Connected</span></div>
+        </div>
+        <button id="logout-btn" class="icon-btn" type="button" title="Log out" aria-label="Log out">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
+          </svg>
+        </button>
+      </div>
+
+      <input id="search" class="search" type="search" placeholder="Search people" aria-label="Search people">
+
+      <div class="section-head">
+        <span>CHATS</span>
+        <span id="online-count">0 online</span>
+      </div>
+
+      <ul id="contacts" class="contacts"></ul>
+    </aside>
+
+    <section class="chat" id="chat" aria-label="Conversation">
+      <header class="chat-head">
+        <button id="back-btn" class="icon-btn back" type="button" aria-label="Back to chats" hidden>&#8249;</button>
+        <div class="peer" id="peer" hidden>
+          <div class="avatar" id="peer-avatar"></div>
+          <div class="peer-info">
+            <div class="name" id="peer-name"></div>
+            <div class="sub" id="peer-status"></div>
+          </div>
+        </div>
+        <div class="conn online" id="chat-conn"><span class="dot"></span><span>Connected</span></div>
+      </header>
+
+      <p id="banner" class="banner" role="status" hidden></p>
+
+      <div id="empty" class="empty">
+        <div>
+          <div class="empty-title">Select a person to start chatting</div>
+          <div class="empty-sub">Online people are listed first.</div>
+        </div>
+      </div>
+
+      <div id="messages" class="messages" hidden></div>
+
+      <form id="composer" class="composer" hidden>
+        <input id="message-input" class="message-input" type="text" placeholder="Write a message..." maxlength="2000" autocomplete="off" disabled>
+        <button id="send-btn" class="btn send" type="submit" disabled>
+          <span>Send</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+          </svg>
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
