@@ -118,6 +118,24 @@ Each vector in the table above was entered into the official FIRST CVSS v3.1 cal
 
 ![CVSS V10](ScreenShots/CVSS/cvss_V10_3.1.png)
 
+### 3.2 CWE Verification
+
+All 11 CWE-IDs in the table above were independently confirmed against the official MITRE CWE database (`cwe.mitre.org/data/definitions/<id>.html`). Each page's title and description were checked against the vulnerability it is assigned to; all matched.
+
+| Vuln | CWE | Confirmed title |
+|---|---|---|
+| V1 | CWE-322 | Key Exchange without Entity Authentication |
+| V2 | CWE-732 | Incorrect Permission Assignment for Critical Resource |
+| V3 | CWE-916 | Use of Password Hash With Insufficient Computational Effort |
+| V4 | CWE-353 | Missing Support for Integrity Check |
+| V5 | CWE-327 | Use of a Broken or Risky Cryptographic Algorithm |
+| V6 | CWE-307 | Improper Restriction of Excessive Authentication Attempts |
+| V7 | CWE-770 | Allocation of Resources Without Limits or Throttling |
+| V8 | CWE-311 | Missing Encryption of Sensitive Data |
+| V9 | CWE-204 | Observable Response Discrepancy |
+| V10 | CWE-294 | Authentication Bypass by Capture-replay |
+| V11 | CWE-200 | Exposure of Sensitive Information to an Unauthorized Actor |
+
 ## 4. Threat-Actor Profiling
 
 | Actor | Motive | Capability | Relevant vulnerabilities |
@@ -145,7 +163,7 @@ The Phase A baseline is functionally sound but carries the vulnerabilities that 
 ## 7. Scope Not Covered in This Phase
 
 - The browser-side JavaScript (`UI/app.js`) has not been separately source-reviewed for client-side issues (e.g. DOM-based XSS); only the server-side web bridge (`client_ui.py`) was scanned at the network level.
-- CVSS vectors were calculated manually; each has been independently re-verified against the NVD/FIRST calculator as part of this submission.
+- CVSS vectors and CWE-IDs were both independently verified, respectively against the FIRST calculator and the MITRE CWE database, as part of this submission (Sections 3.1 and 3.2).
 
 ## Appendix — Evidence Index
 
