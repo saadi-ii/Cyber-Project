@@ -50,7 +50,7 @@ Each vulnerability below is classified by CWE, mapped to the OWASP Top 10 (2021)
 | V1 | Unauthenticated DH key exchange, so a man-in-the-middle can substitute keys | `crypto.py`, `server.py`, `client.py` | CWE-322 | A02 | 6.8 Medium (`AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N`) | C, I | T1557 (T1557.002 ARP spoofing) |
 | V2 | Credential file stored unprotected on disk, with no OS-level access control, and historically tracked in git | `credentials.txt` | CWE-732 | A01, A05 | 7.1 High (`AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N`) | C, I | T1552.001 |
 | V3 | Fast salted SHA-256 used for password hashing, so offline cracking is cheap | `authentication.py` | CWE-916 | A02 | 5.5 Medium (`AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N`) | C | T1110.002 |
-| V4 | AES-CBC with no message authentication code, so ciphertext can be modified in transit without detection | `crypto.py` | CWE-353 | A02 | 4.5 Medium (`AV:A/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N`) | I | T1565.002 |
+| V4 | AES-CBC with no message authentication code, so ciphertext can be modified in transit without detection | `crypto.py` | CWE-353 | A02 | 5.3 Medium (`AV:A/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N`) | I | T1565.002 |
 | V5 | Plain SHA-256 of the DH shared secret used as the key-derivation step, instead of a dedicated KDF such as HKDF | `crypto.py` | CWE-327 | A02 | 3.7 Low (`AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N`) | C | T1600 |
 | V6 | No brute-force protection or account lockout on login attempts | `server.py`, `authentication.py` | CWE-307 | A07 | 6.5 Medium (`AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N`) | C, I | T1110.001, T1110.003 |
 | V7 | No limit on concurrent connections or threads, and no timeouts (`listen(5)` backlog, one thread spawned per connection) | `server.py` | CWE-770 | A04 | 7.5 High (`AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H`) | A | T1499.002 |
@@ -60,6 +60,81 @@ Each vulnerability below is classified by CWE, mapped to the OWASP Top 10 (2021)
 | V11 | Verbose server banner discloses exact software and version (`Server: SecureChatUI/1.0 Python/3.14.8`), and error responses leak internal implementation detail (JSON error bodies, generated HTML error pages) — confirmed directly in the Nmap evidence above | `client_ui.py` | CWE-200 | A05 | 5.3 Medium (`AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N`) | C | T1592.002 |
 
 These findings match the vulnerabilities the project brief identifies as expected for this baseline: unauthenticated key exchange, fast password hashing, missing message integrity, weak key derivation, and an unprotected credential file.
+
+### 3.1 CVSS Verification Evidence
+
+Each vector in the table above was entered into the official FIRST CVSS v3.1 calculator, and the score it returned matches the table. V9 and V11 share the same vector, so one screenshot covers both. A first manual estimate for V4 gave 4.5; the calculator returned 5.3, so the table uses the calculator's value.
+
+| Vuln | Calculator score |
+|---|---|
+| V1 | 6.8 Medium |
+| V2 | 7.1 High |
+| V3 | 5.5 Medium |
+| V4 | 5.3 Medium |
+| V5 | 3.7 Low |
+| V6 | 6.5 Medium |
+| V7 | 7.5 High |
+| V8 | 4.9 Medium |
+| V9, V11 | 5.3 Medium |
+| V10 | 3.1 Low |
+
+**V1**
+
+![CVSS V1](ScreenShots/CVSS/cvss_V1_6.8.png)
+
+**V2**
+
+![CVSS V2](ScreenShots/CVSS/cvss_V2_7.1.png)
+
+**V3**
+
+![CVSS V3](ScreenShots/CVSS/cvss_V3_5.5.png)
+
+**V4**
+
+![CVSS V4](ScreenShots/CVSS/cvss_V4_5.3.png)
+
+**V5**
+
+![CVSS V5](ScreenShots/CVSS/cvss_V5_3.7.png)
+
+**V6**
+
+![CVSS V6](ScreenShots/CVSS/cvss_V6_6.5.png)
+
+**V7**
+
+![CVSS V7](ScreenShots/CVSS/cvss_V7_7.5.png)
+
+**V8**
+
+![CVSS V8](ScreenShots/CVSS/cvss_V8_4.9.png)
+
+**V9 and V11**
+
+![CVSS V9 and V11](ScreenShots/CVSS/cvss_V9_V11_5.3.png)
+
+**V10**
+
+![CVSS V10](ScreenShots/CVSS/cvss_V10_3.1.png)
+
+### 3.2 CWE Verification
+
+All 11 CWE-IDs in the table above were independently confirmed against the official MITRE CWE database (`cwe.mitre.org/data/definitions/<id>.html`). Each page's title and description were checked against the vulnerability it is assigned to; all matched.
+
+| Vuln | CWE | Confirmed title |
+|---|---|---|
+| V1 | CWE-322 | Key Exchange without Entity Authentication |
+| V2 | CWE-732 | Incorrect Permission Assignment for Critical Resource |
+| V3 | CWE-916 | Use of Password Hash With Insufficient Computational Effort |
+| V4 | CWE-353 | Missing Support for Integrity Check |
+| V5 | CWE-327 | Use of a Broken or Risky Cryptographic Algorithm |
+| V6 | CWE-307 | Improper Restriction of Excessive Authentication Attempts |
+| V7 | CWE-770 | Allocation of Resources Without Limits or Throttling |
+| V8 | CWE-311 | Missing Encryption of Sensitive Data |
+| V9 | CWE-204 | Observable Response Discrepancy |
+| V10 | CWE-294 | Authentication Bypass by Capture-replay |
+| V11 | CWE-200 | Exposure of Sensitive Information to an Unauthorized Actor |
 
 ## 4. Threat-Actor Profiling
 
@@ -88,7 +163,7 @@ The Phase A baseline is functionally sound but carries the vulnerabilities that 
 ## 7. Scope Not Covered in This Phase
 
 - The browser-side JavaScript (`UI/app.js`) has not been separately source-reviewed for client-side issues (e.g. DOM-based XSS); only the server-side web bridge (`client_ui.py`) was scanned at the network level.
-- CVSS vectors were calculated manually; each has been independently re-verified against the NVD/FIRST calculator as part of this submission.
+- CVSS vectors and CWE-IDs were both independently verified, respectively against the FIRST calculator and the MITRE CWE database, as part of this submission (Sections 3.1 and 3.2).
 
 ## Appendix — Evidence Index
 
