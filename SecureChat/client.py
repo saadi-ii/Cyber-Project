@@ -25,6 +25,16 @@ def receive_messages(reader, aes_key, stop_event):
             if message_type == "chat":
                 print(f"\n{reply.get('from')}: {reply.get('message')}")
                 print("You: ", end="", flush=True)
+            elif message_type == "error":
+                print(f"\n[Error] {reply.get('message')}")
+                print("You: ", end="", flush=True)
+            elif message_type == "users":
+                names = [
+                    f"{u['name']} ({'online' if u['online'] else 'offline'})"
+                    for u in reply.get("users", [])
+                ]
+                print("\nUsers: " + ", ".join(names))
+                print("You: ", end="", flush=True)
             elif message_type == "system":
                 print("\n" + reply.get("message", ""))
                 stop_event.set()
@@ -91,8 +101,11 @@ def main():
         if not response.get("success"):
             return
 
-        print("\nChat started. Type a message and press Enter.")
-        print("Type 'bye' to leave the chat.\n")
+        print("\nChat started.")
+        print("Commands: /users = list users, /to <name> = choose recipient,")
+        print("          bye = leave the chat.\n")
+        recipient = input("Send messages to (username): ").strip()
+        message_id = 0
 
         receiver = threading.Thread(
             target=receive_messages,
@@ -107,11 +120,24 @@ def main():
             except (EOFError, KeyboardInterrupt):
                 message = "bye"
 
-            encrypted_message = encrypt_data(
-                aes_key,
-                encode_json({"type": "chat", "message": message})
-            )
-            send_msg(sock, encrypted_message)
+            if message.strip() == "/users":
+                payload = {"type": "users"}
+            elif message.startswith("/to "):
+                recipient = message[4:].strip()
+                print(f"Now messaging: {recipient}")
+                continue
+            elif not message.strip():
+                continue
+            else:
+                message_id += 1
+                payload = {
+                    "type": "chat",
+                    "to": recipient,
+                    "id": message_id,
+                    "message": message
+                }
+
+            send_msg(sock, encrypt_data(aes_key, encode_json(payload)))
 
             if message.lower() == "bye":
                 stop_event.set()
