@@ -4,7 +4,7 @@
 **Project:** Secure Chat System — Design, Threat Analysis, Attack Simulation & Hardening  
 **Course:** CY2004 Cyber Security (BS-CY)  
 **CLO Mapped:** CLO1 (Vulnerabilities) + CLO2 (Malware analysis)  
-**Author:** Munir Naveed  
+**Author:** harmas  
 **Date:** November 20, 2026  
 **Total Marks:** 40 (Phase B: 20 + Phase C: 20)
 
@@ -514,7 +514,7 @@ admin|salt3|hash3
 
 ---
 
-**Report Compiled By:** Munir Naveed  
+**Report Compiled By:** harmas  
 **Date:** November 20, 2026  
 **Assessment:** CLO1 + CLO2 (40 marks total)  
 **Word Count:** ~7,500 words  
